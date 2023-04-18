@@ -71,4 +71,4 @@ const testResult = model.evaluate(xTest, yTest);
 
 await model.save('ruta/al/nuevo/modelo');
 
-
+En este ejemplo, estamos utilizando la librería @tensorflow/tfjs-node para entrenar el modelo en una CPU o GPU local. También estamos cargando el modelo preentrenado de @tensorflow-models/coco-ssd. Debes reemplazar los comentarios Preprocesar datos de entrenamiento aquí con tu código para preprocesar los datos de entrenamiento y xTrain, yTrain, xTest, yTest con tus datos de entrenamiento y prueba. Finalmente, reemplaza 'ruta/al/nuevo/modelo' con la ruta donde quieres guardar el modelo reentrenado.
