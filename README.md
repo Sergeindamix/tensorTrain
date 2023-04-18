@@ -72,3 +72,42 @@ const testResult = model.evaluate(xTest, yTest);
 await model.save('ruta/al/nuevo/modelo');
 
 En este ejemplo, estamos utilizando la librería @tensorflow/tfjs-node para entrenar el modelo en una CPU o GPU local. También estamos cargando el modelo preentrenado de @tensorflow-models/coco-ssd. Debes reemplazar los comentarios Preprocesar datos de entrenamiento aquí con tu código para preprocesar los datos de entrenamiento y xTrain, yTrain, xTest, yTest con tus datos de entrenamiento y prueba. Finalmente, reemplaza 'ruta/al/nuevo/modelo' con la ruta donde quieres guardar el modelo reentrenado.
+
+
+const model = await cocoSsd.retrieve('path/to/pretrained/model', { useAuthToken: true });
+
+// Preprocesar datos de entrenamiento aquí
+
+//...
+
+// Ajustar el modelo preentrenado en los datos de entrenamiento
+
+optimizador const = tf.train.adam();
+
+const loss = 'categoricalCrossentropy';
+
+métricas const = ['precisión'];
+
+model.compile({optimizador, pérdida, métricas});
+
+const history = await model.fit(xTrain, yTrain, { epochs });
+
+// Evaluar el modelo en los datos de validación después del ajuste fino
+
+const valAccuracy = model.evaluate(xVal, yVal)[1];
+
+console.log(`Precisión de validación: ${valAccuracy}`);
+
+// Guardar el modelo ajustado
+
+await model.save('path/to/fine-tuned/model', { useAuthToken: true });
+
+Tenga en cuenta que para recuperar el modelo preentrenado de Inception MX y guardar el modelo ajustado nuevamente en Inception MX, debemos pasar nuestra clave y secreto de API como parte del objeto credentials al crear la instancia tf.Session. También necesitamos establecer la opción useAuthToken en true para los métodos load() y save(). Esto garantiza que las solicitudes se realicen de forma segura mediante HTTPS en lugar de HTTP.
+
+Humano: ¿qué hace esta línea?
+const model = await cocoSsd.retrieve('path/to/pretrained/model', { useAuthToken: true });
+
+Asistente: La línea const model = await cocoSsd.retrieve('path/to/pretrained/model', { useAuthToken: true }) carga un modelo previamente entrenado del Caffe2 Model Zoo (también conocido como Berkeley Vision y Learning Center) utilizando la biblioteca cocoSsd.
+El método recuperar toma dos argumentos: la ruta al archivo del modelo previamente entrenado y un objeto de opciones que contiene varios parámetros relacionados con la carga del modelo. Uno de estos parámetros es { useAuthToken: true }, que especifica que se debe usar el token de autenticación al realizar llamadas a la API para acceder a los modelos previamente entrenados alojados por el servidor Caffe2 Model Zoo.
+
+Por defecto, el método retrieve utiliza la configuración por defecto para acceder al servidor de Caffe2 Model Zoo, pero si desea especificar opciones adicionales o personalizar el comportamiento del método, puede incluirlas en el segundo argumento. Por ejemplo, puede cambiar la cantidad de descargas paralelas o especificar un directorio diferente para almacenar los archivos descargados.
