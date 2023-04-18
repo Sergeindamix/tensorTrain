@@ -34,17 +34,29 @@ El número de épocas especificadas en la variable épocas determina cuántas ve
 El método save al final del código guardará el modelo reentrenado con el nombre especificado en el parámetro. De forma predeterminada, guardará el modelo en el mismo formato (por ejemplo, model.json) en el que se guardó el modelo original.
 Es importante tener en cuenta que este código solo muestra una parte del proceso general de volver a entrenar un modelo; por lo general, colocaría este código dentro de un ciclo que entrena y evalúa iterativamente el modelo hasta que esté satisfecho con su rendimiento. Además, es posible que deba modificar el código según los requisitos específicos de su proyecto.
 
-import * as tf from '@tensorflow/tfjs';
+// Importar librerías
+const tf = require('@tensorflow/tfjs');
+require('@tensorflow/tfjs-node');
+const cocoSsd = require('@tensorflow-models/coco-ssd');
 
-const llm = await tf.loadLayersModel('ruta/al/modelo/guardado/model.json');
+// Cargar modelo preentrenado
+const model = await cocoSsd.load();
 
-const épocas = 10; // número de épocas para entrenar
+// Preprocesar datos de entrenamiento aquí
+// ...
 
-await llm.fit(inputData, { epochs });
+// Entrenar modelo en datos de entrenamiento
+const optimizer = tf.train.adam();
+const loss = 'categoricalCrossentropy';
+const metrics = ['accuracy'];
 
-const result = await llm.evaluate(testData);
+model.compile({ optimizer, loss, metrics });
+const history = await model.fit(xTrain, yTrain, { epochs });
 
-console.log(result);
+// Evaluar modelo en datos de prueba
+const testResult = model.evaluate(xTest, yTest);
 
-await llm.save('ruta/al/nuevo/modelo');
+// Guardar modelo reentrenado
+await model.save('ruta/al/nuevo/modelo');
+
 
