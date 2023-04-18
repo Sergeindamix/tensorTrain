@@ -35,28 +35,40 @@ El método save al final del código guardará el modelo reentrenado con el nomb
 Es importante tener en cuenta que este código solo muestra una parte del proceso general de volver a entrenar un modelo; por lo general, colocaría este código dentro de un ciclo que entrena y evalúa iterativamente el modelo hasta que esté satisfecho con su rendimiento. Además, es posible que deba modificar el código según los requisitos específicos de su proyecto.
 
 // Importar librerías
+
 const tf = require('@tensorflow/tfjs');
+
 require('@tensorflow/tfjs-node');
+
 const cocoSsd = require('@tensorflow-models/coco-ssd');
 
 // Cargar modelo preentrenado
+
 const model = await cocoSsd.load();
 
 // Preprocesar datos de entrenamiento aquí
+
 // ...
 
 // Entrenar modelo en datos de entrenamiento
+
 const optimizer = tf.train.adam();
+
 const loss = 'categoricalCrossentropy';
+
 const metrics = ['accuracy'];
 
+
 model.compile({ optimizer, loss, metrics });
+
 const history = await model.fit(xTrain, yTrain, { epochs });
 
 // Evaluar modelo en datos de prueba
+
 const testResult = model.evaluate(xTest, yTest);
 
 // Guardar modelo reentrenado
+
 await model.save('ruta/al/nuevo/modelo');
 
 
